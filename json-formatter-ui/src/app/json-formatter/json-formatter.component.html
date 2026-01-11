@@ -1,0 +1,18 @@
+<h2>JSON Formatter</h2>
+
+<textarea
+  rows="10"
+  cols="60"
+  [(ngModel)]="inputJson"
+  placeholder="Paste raw JSON here">
+</textarea>
+
+<br /><br />
+
+<button (click)="formatJson()">Format</button>
+
+<p *ngIf="error" style="color:red">{{ error }}</p>
+
+<pre *ngIf="outputJson">
+{{ outputJson }}
+</pre>
