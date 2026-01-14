@@ -1,6 +1,6 @@
 {
   "buildCommand": "cd json-formatter-ui && npm ci && npm run build",
-  "outputDirectory": "json-formatter-ui/dist/json-formatter-ui/browser",
+  "outputDirectory": "json-formatter-ui/dist/json-formatter-ui",
   "framework": null,
   "rewrites": [
     {
