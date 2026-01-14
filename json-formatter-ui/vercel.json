@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/json-formatter-ui",
+  "outputDirectory": "dist/json-formatter-ui/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
