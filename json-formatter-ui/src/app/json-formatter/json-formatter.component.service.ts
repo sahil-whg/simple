@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class JsonFormatterService {
-  private apiUrl = 'http://localhost:8000/api/format/';
+  private apiUrl = 'http://51.20.51.136/api/format/';
 
   constructor(private http: HttpClient) {}
 
