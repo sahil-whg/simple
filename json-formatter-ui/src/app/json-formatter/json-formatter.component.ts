@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { JsonFormatterService } from '../json-formatter/json-formatter.component.service';
 import JSON5 from 'json5';
 
 @Component({
   selector: 'app-json-formatter',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './json-formatter.component.html',
   styleUrls: ['./json-formatter.component.css']
 
@@ -17,7 +18,7 @@ export class JsonFormatterComponent {
   outputJson = '';
   error = '';
 
-  constructor(private service: JsonFormatterService) {}
+  constructor(private service: JsonFormatterService, private http: HttpClient) {}
 
   formatJson() {
     if (!this.inputJson || !this.inputJson.trim()) {
@@ -54,5 +55,31 @@ export class JsonFormatterComponent {
       })
       .join('\n');
   }
+  showModal = false;
+type = 'feature';
+message = '';
+
+openModal() {
+  this.showModal = true;
+}
+
+closeModal() {
+  this.showModal = false;
+  this.message = '';
+}
+
+submitFeedback() {
+  console.log('submitFeedback', this.message);
+  if (!this.message.trim()) return;
+
+  this.http.post('http://localhost:8000/api/feedback/', {
+    //type: this.type,
+    message: this.message
+  }).subscribe(() => {
+    alert('Thanks for your feedback!');
+    this.closeModal();
+  });
+}
+
   
 }

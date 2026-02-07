@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z+=n6h@bq!vic@g(+6!&(wqz$^pa670fdv#*#5#%y@1drce*iu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '51.20.51.136']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', '51.20.51.136', '*', 'jsonsimple.com']
 
 
 # Application definition
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders'
+    'corsheaders',
+    'jsonformatter'
 ]
 
 MIDDLEWARE = [
@@ -119,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

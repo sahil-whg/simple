@@ -23,3 +23,32 @@ def format_json(request):
             {"error": str(e)},
             status=status.HTTP_400_BAD_REQUEST
         )
+
+
+# views.py
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Feedback
+
+@csrf_exempt
+def feedback_view(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST only'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+        message = data.get('message', '').strip()
+        # ftype = data.get('type', 'feature')
+
+        if not message:
+            return JsonResponse({'error': 'Message required'}, status=400)
+
+        Feedback.objects.create(
+            # type=ftype,
+            message=message
+        )
+
+        return JsonResponse({'status': 'ok'})
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
