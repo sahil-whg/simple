@@ -1,0 +1,63 @@
+name: Deploy Angular and Django to MilesWeb
+
+on:
+  push:
+    branches:
+      - main  # Runs automatically whenever you push to main
+
+jobs:
+  # ----------------------------------------------------
+  # JOB 1: Build Angular and Deploy to public_html
+  # ----------------------------------------------------
+  deploy-frontend:
+    name: Build & Upload Angular
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies and Build Angular
+        working-directory: ./json-formatter-ui
+        run: |
+          npm ci || npm install
+          npx ng build --configuration production
+
+      - name: Upload Angular via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./json-formatter-ui/dist/json-formatter-ui/browser/
+          server-dir: public_html/
+          dangerous-clean-slate: false
+
+  # ----------------------------------------------------
+  # JOB 2: Upload Django Backend Files
+  # ----------------------------------------------------
+  deploy-backend:
+    name: Upload Django Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Upload Django via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./mainformatter/
+          server-dir: mainformatter_backend/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/__pycache__/**
+            **/*.sqlite3
